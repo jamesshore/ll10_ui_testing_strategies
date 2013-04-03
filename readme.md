@@ -13,6 +13,9 @@ The code under test ([src/validate.js]) validates whether a text field is empty.
 
 For details about the different strategies, read the test files or watch [the screencast](http://www.letscodejavascript.com/v3/episodes/lessons_learned/10).
 
+NOTE: For simplicity, this example doesn't support IE 8 or below. It has been tested on Chrome 26, Firefox 19, IE9, and Safari 6.0 on iOS and Mac. (The concepts demonstrated here *do* apply to IE 8, but IE 8's DOM is non-standard and would require additional code, or a DOM abstraction such as JQuery, in order to work. That extra code would make the example harder to understand.)
+
+
 Building and Testing
 --------------------
 

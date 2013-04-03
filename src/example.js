@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
+/*global dump */
 
 var example = {};
 
@@ -7,13 +8,13 @@ var example = {};
 
 	example.REQUIRED_FIELD_CLASS = "example-required";
 
-	example.validateTextField = function(field) {
-		if (field.value) {
-			field.removeAttribute("class");
-		}
-		else {
-			field.setAttribute("class", example.REQUIRED_FIELD_CLASS);
-		}
+	example.initializeValidation = function(textField, submitLink) {
+		submitLink.addEventListener("click", function(event) {
+			if (textField.value) return;
+
+			event.preventDefault();
+			textField.setAttribute("class", example.REQUIRED_FIELD_CLASS);
+		});
 	};
 
 }());
