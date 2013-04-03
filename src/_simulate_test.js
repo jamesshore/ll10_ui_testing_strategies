@@ -19,10 +19,6 @@
 			submitLink = document.getElementById("submitLink");
 
 			example.initializeValidation(textField, submitLink);
-
-//			var div = document.createElement("div");
-//			document.body.insertBefore(div, null);
-//			paper = example.initializeDrawingArea(div);
 		});
 
 		afterEach(function() {
