@@ -10,6 +10,7 @@
 
 	var PORT = 5000;
 	var EXAMPLE_PAGE_TITLE = "UI Testing Example";
+	var REQUIRED_FIELD_CLASS = "example-required";
 
 	describe("Test Strategy #1 (Use a robot to interact with the UI)", function() {
 		var driver;
@@ -58,20 +59,16 @@
 		beforeEach(function(done) {
 			driver.get("http://localhost:" + PORT + "/example.html");
 			textField = driver.findElement({id: "text_field"});
-			submitLink = driver.findElement({id: "submit_link"});
-			submitLink.then(function() {
+			(submitLink = driver.findElement({id: "submit_link"})).
+			then(function() {
 				done();
 			});
 		});
 
 		it("follows link when field is not empty", function(done) {
-			textField.sendKeys("not empty").
-			then(function() {
-				return submitLink.click();
-			}).
-			then(function() {
-				return driver.getTitle();
-			}).
+			textField.sendKeys("not empty");
+			submitLink.click();
+			driver.getTitle().
 			then(function(title) {
 				expect(title).to.not.equal(EXAMPLE_PAGE_TITLE);
 				done();
@@ -79,27 +76,22 @@
 		});
 
 		it("does not follow link when field is empty", function(done) {
-			submitLink.click().
-			then(function() {
-				return driver.getTitle();
-			}).
+			submitLink.click();
+			driver.getTitle().
 			then(function(title) {
 				expect(title).to.equal(EXAMPLE_PAGE_TITLE);
 				done();
 			});
 		});
 
-//		it("sets CSS class when field is empty", function() {
-//			clickSubmitLink();
-//			expect(textField.getAttribute("class")).to.equal(example.REQUIRED_FIELD_CLASS);
-//		});
-//
-//
-//		function clickSubmitLink() {
-//			var event = document.createEvent("MouseEvents");
-//			event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-//			submitLink.dispatchEvent(event);
-//		}
+		it("sets CSS class when field is empty", function(done) {
+			submitLink.click();
+			textField.getAttribute("class").
+			then(function(value) {
+				expect(value).to.equal(REQUIRED_FIELD_CLASS);
+				done();
+			});
+		});
 
 	});
 
