@@ -6,7 +6,7 @@
 	var REQUIRED_BROWSERS = [
 //		"IE 8.0 (Windows)",  // NOTE: IE 8 is not supported. See the readme for details.
 		"IE 9.0 (Windows)",
-		"Firefox 19.0 (Mac)",
+		"Firefox 20.0 (Mac)",
 		"Chrome 26.0 (Mac)",
 		"Safari 6.0 (Mac)",
 		"Safari 6.0 (iOS)"
