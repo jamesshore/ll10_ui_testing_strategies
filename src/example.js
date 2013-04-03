@@ -10,11 +10,16 @@ var example = {};
 
 	example.initializeValidation = function(textField, submitLink) {
 		submitLink.addEventListener("click", function(event) {
-			if (textField.value) return;
-
-			event.preventDefault();
-			textField.setAttribute("class", example.REQUIRED_FIELD_CLASS);
+			example.handleSubmit(textField, event);
 		});
+	};
+
+	// Note: This code is only public because it needs to be called by _thin_ui_test.js
+	example.handleSubmit = function(textField, event) {
+		if (textField.value) return;
+
+		event.preventDefault();
+		textField.setAttribute("class", example.REQUIRED_FIELD_CLASS);
 	};
 
 }());
