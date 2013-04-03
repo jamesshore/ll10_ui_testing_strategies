@@ -15,6 +15,7 @@
 	var lint = require("./build/util/lint_runner.js");
 	var testacular = require("./build/util/testacular_runner.js");
 	var selenium = require("./build/util/selenium_runner.js");
+	var sh = require("./build/util/sh.js");
 
 	desc("Lint and test");
 	task("default", ["lint", "test"], function() {
@@ -45,8 +46,8 @@
 	}, {async: true});
 
 	task("testWithSelenium", function() {
-		fail("not yet implemented");
-	});
+		sh.run("node node_modules/mocha/bin/mocha src/_robot_test.js", complete, fail);
+	}, {async: true});
 
 	function browserFilesToLint() {
 		var files = new jake.FileList();
