@@ -1,6 +1,6 @@
 // Copyright (c) 2012 Titanium I.T. LLC. All rights reserved. See LICENSE.txt for details.
 /*global desc, task, jake, fail, complete, directory, require, console, process */
-(function () {
+(function() {
 	"use strict";
 
 	var REQUIRED_BROWSERS = [
@@ -15,7 +15,8 @@
 	var lint = require("./build/util/lint_runner.js");
 	var testacular = require("./build/util/testacular_runner.js");
 	var selenium = require("./build/util/selenium_runner.js");
-	var sh = require("./build/util/sh.js");
+	var Mocha = require("mocha");
+
 
 	desc("Lint and test");
 	task("default", ["lint", "test"], function() {
@@ -33,7 +34,7 @@
 	});
 
 	desc("Lint everything");
-	task("lint", [], function () {
+	task("lint", [], function() {
 		var passed = lint.validateFileList(browserFilesToLint(), browserLintOptions(), {});
 		if (!passed) fail("Lint failed");
 	});
@@ -46,7 +47,17 @@
 	}, {async: true});
 
 	task("testWithSelenium", function() {
-		sh.run("node node_modules/mocha/bin/mocha src/_robot_test.js", complete, fail);
+		var mocha = new Mocha({ui: "bdd"});
+		mocha.addFile("src/_robot_test.js");
+
+		var failures = false;
+		mocha.run()
+			.on("fail",function() {
+				failures = true;
+			}).on("end", function() {
+				if (failures) fail("Tests failed");
+				complete();
+			});
 	}, {async: true});
 
 	function browserFilesToLint() {
@@ -57,20 +68,20 @@
 
 	function globalLintOptions() {
 		return {
-			bitwise:true,
-			curly:false,
-			eqeqeq:true,
-			forin:true,
-			immed:true,
-			latedef:false,
-			newcap:true,
-			noarg:true,
-			noempty:true,
-			nonew:true,
-			regexp:true,
-			undef:true,
-			strict:true,
-			trailing:true
+			bitwise: true,
+			curly: false,
+			eqeqeq: true,
+			forin: true,
+			immed: true,
+			latedef: false,
+			newcap: true,
+			noarg: true,
+			noempty: true,
+			nonew: true,
+			regexp: true,
+			undef: true,
+			strict: true,
+			trailing: true
 		};
 	}
 

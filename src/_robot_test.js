@@ -5,10 +5,12 @@
 	"use strict";
 
 	var webdriver = require("selenium-webdriver");
+	var expect = require("expect.js");
 
 	describe("Google Search", function() {
 		it("should work", function() {
 			console.log("¡Hola!");
+			expect(true).to.be(true);
 		});
 	});
 
