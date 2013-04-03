@@ -5,67 +5,90 @@
 	"use strict";
 
 	var webdriver = require("selenium-webdriver");
+	var child_process = require("child_process");
 	var expect = require("expect.js");
 
-	describe("Google Search", function() {
+	var PORT = 5000;
+	var EXAMPLE_PAGE_TITLE = "UI Testing Example";
+
+	describe("Test Strategy #1 (Use a robot to interact with the UI)", function() {
 		var driver;
+		var webServer;
+		var textField;
+		var submitLink;
 
 		this.timeout(0);    // Disable Mocha's default timeout mechanism
 
-		before(function() {
+		function launchWebServer(done) {
+			webServer = child_process.spawn("node", ["node_modules/http-server/bin/http-server", "src", "-p", PORT], { stdio: "pipe" });
+
+			var stdout = "";
+			webServer.stdout.setEncoding("utf8");
+			webServer.stdout.on("data", function(chunk) {
+				if (stdout === null) return;
+
+				stdout += chunk;
+				if (stdout.indexOf("Hit CTRL-C to stop the server") !== -1) {
+					stdout = null;
+					done();
+				}
+			});
+		}
+
+		function launchSeleniumBrowser() {
 			driver = new webdriver.Builder().
 				withCapabilities({'browserName': 'firefox'}).
 				build();
+		}
+
+		before(function(done) {
+			launchSeleniumBrowser();
+			launchWebServer(done);
 		});
 
 		after(function(done) {
-			driver.quit().then(done);
+			driver.quit().then(function() {
+				webServer.on("exit", function() {
+					done();
+				});
+				webServer.kill();
+			});
 		});
 
-//		beforeEach(function() {
-//			driver.get("file://src/example.html");
-//		});
-
-		it("should work", function() {
-			driver.get("file://src/example.html");
-			driver.wait(function() { return false; }, 5000);
-//			driver.get("http://www.google.com");
-//			driver.findElement(webdriver.By.name('q')).sendKeys('webdriver');
-//			driver.findElement(webdriver.By.name('btnG')).click();
-//			driver.wait(function() {
-//				return driver.getTitle().then(function(title) {
-//					return title === 'webdriver - Google Search';
-//				});
-//			}, 1000);
+		beforeEach(function(done) {
+			driver.get("http://localhost:" + PORT + "/example.html");
+			textField = driver.findElement({id: "text_field"});
+			submitLink = driver.findElement({id: "submit_link"});
+			submitLink.then(function() {
+				done();
+			});
 		});
 
+		it("follows link when field is not empty", function(done) {
+			textField.sendKeys("not empty").
+			then(function() {
+				return submitLink.click();
+			}).
+			then(function() {
+				return driver.getTitle();
+			}).
+			then(function(title) {
+				expect(title).to.not.equal(EXAMPLE_PAGE_TITLE);
+				done();
+			});
+		});
 
-//		afterEach(function() {
-//			document.body.removeChild(textField);
-//			document.body.removeChild(submitLink);
-//		});
-//
-//		it("follows link when field is not empty", function() {
-//			var eventCancelled;
-//			submitLink.addEventListener("click", function(event) {
-//				eventCancelled = event.defaultPrevented;
-//			});
-//
-//			textField.value = "not empty";
-//			clickSubmitLink();
-//			expect(eventCancelled).to.be(false);
-//		});
+		it("does not follow link when field is empty", function(done) {
+			submitLink.click().
+			then(function() {
+				return driver.getTitle();
+			}).
+			then(function(title) {
+				expect(title).to.equal(EXAMPLE_PAGE_TITLE);
+				done();
+			});
+		});
 
-//		it("does not follow link when field is empty", function() {
-//			var eventCancelled;
-//			submitLink.addEventListener("click", function(event) {
-//				eventCancelled = event.defaultPrevented;
-//			});
-//
-//			clickSubmitLink();
-//			expect(eventCancelled).to.be(true);
-//		});
-//
 //		it("sets CSS class when field is empty", function() {
 //			clickSubmitLink();
 //			expect(textField.getAttribute("class")).to.equal(example.REQUIRED_FIELD_CLASS);
