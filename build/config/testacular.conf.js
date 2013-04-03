@@ -18,7 +18,7 @@ files = [
 
 // list of files to exclude
 exclude = [
-  
+  'src/_robot_test.js'
 ];
 
 

@@ -14,6 +14,7 @@
 
 	var lint = require("./build/util/lint_runner.js");
 	var testacular = require("./build/util/testacular_runner.js");
+	var selenium = require("./build/util/selenium_runner.js");
 
 	desc("Lint and test");
 	task("default", ["lint", "test"], function() {
@@ -25,6 +26,11 @@
 		testacular.serve(complete, fail);
 	}, {async: true});
 
+	desc("Start Selenium server -- run this second");
+	task("selenium", function() {
+		selenium.serve();
+	});
+
 	desc("Lint everything");
 	task("lint", [], function () {
 		var passed = lint.validateFileList(browserFilesToLint(), browserLintOptions(), {});
@@ -32,9 +38,15 @@
 	});
 
 	desc("Test everything");
-	task("test", function() {
+	task("test", ["testWithTestacular", "testWithSelenium"]);
+
+	task("testWithTestacular", function() {
 		testacular.runTests(REQUIRED_BROWSERS, complete, fail);
 	}, {async: true});
+
+	task("testWithSelenium", function() {
+		fail("not yet implemented");
+	});
 
 	function browserFilesToLint() {
 		var files = new jake.FileList();

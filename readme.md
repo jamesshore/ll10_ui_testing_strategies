@@ -32,6 +32,10 @@ To build (and test):
 2. Start the browsers you want to test against and point each one at `http://localhost:8080`.
 3. Run `./jake.sh` (Unix/Mac) or `jake` (Windows) every time you want to build and test.
 
+Selenium tests:
+
+
+
 Manual Testing
 --------------
 
