@@ -54,7 +54,7 @@
 
 
 		function clickSubmitLink() {
-			var event = document.createEvent("MouseEvents");
+			var event = document.createEvent("MouseEvent");
 			event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			submitLink.dispatchEvent(event);
 		}
