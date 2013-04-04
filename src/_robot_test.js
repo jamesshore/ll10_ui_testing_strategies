@@ -20,28 +20,6 @@
 
 		this.timeout(0);    // Disable Mocha's default timeout mechanism
 
-		function launchWebServer(done) {
-			webServer = child_process.spawn("node", ["node_modules/http-server/bin/http-server", "src", "-p", PORT], { stdio: "pipe" });
-
-			var stdout = "";
-			webServer.stdout.setEncoding("utf8");
-			webServer.stdout.on("data", function(chunk) {
-				if (stdout === null) return;
-
-				stdout += chunk;
-				if (stdout.indexOf("Hit CTRL-C to stop the server") !== -1) {
-					stdout = null;
-					done();
-				}
-			});
-		}
-
-		function launchSeleniumBrowser() {
-			driver = new webdriver.Builder().
-				withCapabilities({'browserName': 'firefox'}).
-				build();
-		}
-
 		before(function(done) {
 			launchSeleniumBrowser();
 			launchWebServer(done);
@@ -92,6 +70,28 @@
 				done();
 			});
 		});
+
+		function launchSeleniumBrowser() {
+			driver = new webdriver.Builder().
+				withCapabilities({'browserName': 'firefox'}).
+				build();
+		}
+
+		function launchWebServer(done) {
+			webServer = child_process.spawn("node", ["node_modules/http-server/bin/http-server", "src", "-p", PORT], { stdio: "pipe" });
+
+			var stdout = "";
+			webServer.stdout.setEncoding("utf8");
+			webServer.stdout.on("data", function(chunk) {
+				if (stdout === null) return;
+
+				stdout += chunk;
+				if (stdout.indexOf("Hit CTRL-C to stop the server") !== -1) {
+					stdout = null;
+					done();
+				}
+			});
+		}
 
 	});
 
