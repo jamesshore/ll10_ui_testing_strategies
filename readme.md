@@ -29,9 +29,11 @@ Before building for the first time:
 To build (and test):
 
 1. Run `./jake.sh testacular` (Unix/Mac) or `jake testacular` (Windows) to start the Testacular server.
-2. Run `./jake.sh selenium` (Unix/Mac) or `jake selenium` (Windows) to start the Selenium server.
+2. Run `./jake.sh selenium` (Unix/Mac) or (skip this step on Windows) to start the Selenium server.
 3. Start the browsers you want to test against and point each one at `http://localhost:8080`.
-4. Run `./jake.sh` (Unix/Mac) or `jake` (Windows) every time you want to build and test.
+4. Run `./jake.sh` (Unix/Mac) or `jake testWithTestacular` (Windows) every time you want to build and test.
+
+Note: The Selenium server fails to start on Windows, for some reason. Since the important thing is the example code, which I've confirmed to be correct, I've decided not to throw yet more hours down the Selenium time hole. Suggestions or pull requests welcome. :-)
 
 
 Manual Testing
