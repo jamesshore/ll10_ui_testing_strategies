@@ -5,11 +5,11 @@ This repository contains the sample code for the titular [Lessons Learned episod
 
 The source code in this repository demonstrates three different strategies for testing UI code. The three strategies demonstrated are:
 
-1. Use a robot to interact with the UI exactly like a real user ([src/_robot_test.js])
-2. Simulate the user's actions ([src/_simulate_test.js])
-3. Don't test the UI, but keep it as small as possible ([src/_thin_ui_test.js])
+1. Use a robot to interact with the UI exactly like a real user (`src/_robot_test.js`)
+2. Simulate the user's actions (`src/_simulate_test.js`)
+3. Don't test the UI, but keep it as small as possible (`src/_thin_ui_test.js`)
 
-The code under test ([src/example.js]) validates whether a text field is empty.
+The code under test (`src/example.js`) validates whether a text field is empty.
 
 For details about the different strategies, read the test files or watch [the screencast](http://www.letscodejavascript.com/v3/episodes/lessons_learned/10).
 
@@ -37,4 +37,4 @@ To build (and test):
 Manual Testing
 --------------
 
-To see the code run, open [src/example.html] in a browser.
+To see the code run, open `src/example.html` in a browser.
